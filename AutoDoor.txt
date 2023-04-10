@@ -1,0 +1,38 @@
+    -- player
+    local player = game:GetService("Players").LocalPlayer
+    local char = player.Character or player.CharacterAdded:Wait()
+    
+    --doors
+    local door1 = game.Workspace.Door1 -- change this based on the door part
+    local door2 = game.Workspace.Door2 -- this too for the other door part
+    
+    -- tween service
+    local tweenService = game:GetService("TweenService")
+    
+    --distance
+    local closestDistance = 20
+    
+    local info = TweenInfo.new(
+    	    2, --time
+	    Enum.EasingStyle.Sine, -- easing style
+	    Enum.EasingDirection.In, -- easing dir
+	    0, -- repeat count
+	    true, -- reverse boolean
+	    0 -- delay time
+    )
+    
+    local endResultDoor1 = {Position = Vector3.new(-41.5, 6, 17.5)} -- goal for door 1
+    local endResultDoor2 = {Position = Vector3.new(-41.5, 6, -9.5)} -- goal for door 2
+
+    local runDoor1Script = tweenService:Create(door1, info, endResultDoor1)
+    local runDoor2Script = tweenService:Create(door2, info, endResultDoor2)
+
+    while true do
+	    wait()
+	    local distance = (char.HumanoidRootPart.Position - door1.Position).magnitude -- the distance between player position and door position
+	    if distance <= closestDistance then
+		    -- play the script
+		    runDoor1Script:Play()
+		    runDoor2Script:Play()
+	    end
+    end
